@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+source "$PLUGIN_CORE_AVAILABLE_PATH/common/functions"
+
+APP="$1"; TMP_WORK_DIR="$2"; REV="$3"
+
+[[ ! -f "$TMP_WORK_DIR/.dokku-multi-dockerfile" ]] && exit
+
+dokku_log_info2 "Multi Dockerfile Project detected"
+
+while IFS="=" read -u 10 -a line || [[ -n $line ]]; do
+  [[ "${line[0]}" == "#"* || "${line[1]}" == "" ]] && continue
+  [[ $APP != *"${line[0]}"* ]] && continue
+
+  docker_file="${line[1]}"
+  dokku_log_info2 "Installing with $docker_file"
+
+  # Rename the Dockerfile we want to use to /Dockerfile
+  mv -T "$TMP_WORK_DIR/$docker_file" "$TMP_WORK_DIR/Dockerfile"
+
+  exit
+done 10<"$TMP_WORK_DIR/.dokku-multi-dockerfile"
+
+dokku_log_info2 "The application $APP is not defined in .dokku-multi-dockerfile"
+dokku_log_info2 "Using default deploy"
+exit

@@ -1,0 +1,4 @@
+[plugin]
+description = "Choose which Dockerfile is being used to deploy."
+version = "0.1.0"
+[plugin.config]
