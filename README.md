@@ -34,7 +34,7 @@ second            dokku@dokku.me:second-app
 
 For the `app` and `second-app` applications `Dockerfile` would be used. For `stories` the `Dockerfile.storybook` would be used.
 
-When you push the code to an application's remote, the folder gets detected for you:
+When you push the code to an application's remote, the correct Dockerfile gets detected for you:
 ```
 $ git push first-storybook
 Counting objects: 253, done.
