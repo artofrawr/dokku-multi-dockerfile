@@ -16,7 +16,9 @@ while IFS="=" read -u 10 -a line || [[ -n $line ]]; do
   dokku_log_info2 "Installing with $docker_file"
 
   # Rename the Dockerfile we want to use to /Dockerfile
-  mv -T "$TMP_WORK_DIR/$docker_file" "$TMP_WORK_DIR/Dockerfile"
+  if [ "$docker_file" != "Dockerfile" ]; then 
+    mv -T "$TMP_WORK_DIR/$docker_file" "$TMP_WORK_DIR/Dockerfile"
+  fi
 
   exit
 done 10<"$TMP_WORK_DIR/.dokku-multi-dockerfile"
